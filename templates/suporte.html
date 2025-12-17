@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suporte - Gil Eletrônicos</title>
+
+  <style>
+    :root {
+      --primary: #25D366;
+      --dark-blue: #1a1a2e;
+      --bg: #f4f6fb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--dark-blue);
+      padding: 20px 10%;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: #00d1ff;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .menu a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,.1);
+    }
+
+    .foto {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 4px solid #00d1ff;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      color: var(--dark-blue);
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .btn-whats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--primary);
+      color: #fff;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: .3s;
+    }
+
+    .btn-whats:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(37,211,102,.4);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #777;
+      background: #fff;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <nav class="menu">
+    <span class="logo">Gil Eletrônicos</span>
+    <div>
+      <a href="/">Início</a>
+      <a href="/produtos">Produtos</a>
+      <a href="/suporte">Suporte</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="card">
+
+    <!-- FOTO (troque o arquivo depois) -->
+    <img src="{{ url_for('static', filename='suporte.jpg') }}" class="foto" alt="Foto do Suporte">
+
+    <h2>Suporte</h2>
+    <p>Precisa de ajuda? Fale diretamente comigo pelo WhatsApp.</p>
+
+    <a 
+     
+  href="https://wa.me/5581991644068" 
+  target="_blank"
+  class="btn-whats"
+>
+
+    >
+      <!-- ÍCONE WHATSAPP -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" fill="#fff">
+        <path d="M19.11 17.44c-.29-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.15-.19.29-.74.93-.91 1.12-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.34-1.44-.86-.77-1.44-1.72-1.61-2.01-.17-.29-.02-.45.13-.6.14-.14.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.64-1.55-.88-2.13-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.78.36-.27.29-1.02 1-.02 2.44 1 1.44 1.97 2.83 4.78 3.97 2.81 1.14 2.81.76 3.32.71.51-.05 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z"/>
+        <path d="M16.02 3.2c-7.1 0-12.82 5.73-12.82 12.82 0 2.26.59 4.38 1.63 6.22L3.2 28.8l6.7-1.58c1.78.97 3.82 1.52 5.99 1.52 7.1 0 12.82-5.73 12.82-12.82S23.12 3.2 16.02 3.2z"/>
+      </svg>
+      Chamar no WhatsApp
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  © 2025 Gil Eletrônicos — Suporte
+</footer>
+
+</body>
+</html>

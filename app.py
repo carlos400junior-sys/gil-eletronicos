@@ -1,98 +1,120 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
-import sqlite3
 import os
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, 'gil_eletronicos.db')
-
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 CORS(app)
 
-# Função para iniciar o banco de dados
+# =====================================================
+# CONFIGURAÇÃO DO BANCO POSTGRES (RENDER)
+# =====================================================
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+def get_db_connection():
+    return psycopg2.connect(
+        DATABASE_URL,
+        cursor_factory=RealDictCursor
+    )
+
+# =====================================================
+# CRIA TABELA AUTOMATICAMENTE
+# =====================================================
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute('''
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS produtos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             nome TEXT NOT NULL,
             categoria TEXT NOT NULL,
-            preco REAL NOT NULL,
+            preco NUMERIC NOT NULL,
             descricao TEXT
-        )
-    ''')
+        );
+    """)
     conn.commit()
+    cur.close()
     conn.close()
 
-# --- ROTAS PARA OS ARQUIVOS HTML ---
-
+# =====================================================
+# ROTAS HTML
+# =====================================================
 @app.route('/')
 def index():
-    # Isso procura o arquivo 'index.html' dentro da pasta 'templates'
     return render_template('index.html')
 
 @app.route('/cadastro')
 def pagina_cadastro():
-    # Isso procura o arquivo 'cadastro.html' dentro da pasta 'templates'
     return render_template('cadastro.html')
-
-@app.route('/lista_produtos')
-def lista_produtos():
-    return render_template('index.html') # Usaremos a index como vitrine
 
 @app.route('/produtos')
 def pagina_produtos():
     return render_template('produtos.html')
 
+@app.route('/suporte')
+def suporte():
+    return render_template('suporte.html')
+
+# =====================================================
+# API - LISTAR PRODUTOS
+# =====================================================
 @app.route('/api/produtos')
 def api_produtos():
     search = request.args.get('search', '')
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row # Permite acessar colunas pelo nome
-    cursor = conn.cursor()
-    
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
     if search:
-        cursor.execute("SELECT * FROM produtos WHERE nome LIKE ?", ('%' + search + '%',))
+        cur.execute(
+            "SELECT * FROM produtos WHERE nome ILIKE %s",
+            ('%' + search + '%',)
+        )
     else:
-        cursor.execute("SELECT * FROM produtos")
-        
-    produtos = [dict(row) for row in cursor.fetchall()]
+        cur.execute("SELECT * FROM produtos")
+
+    produtos = cur.fetchall()
+    cur.close()
     conn.close()
+
     return jsonify(produtos)
 
-
-# --- ROTA DE API PARA SALVAR NO BANCO ---
-
+# =====================================================
+# API - CADASTRAR PRODUTO
+# =====================================================
 @app.route('/cadastrar', methods=['POST'])
 def cadastrar():
     dados = request.json
 
-    nome = dados.get('nome')
-    categoria = dados.get('categoria')
-    preco = dados.get('preco')
-    descricao = dados.get('descricao')
-
     try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        cursor.execute(
-            '''
-            INSERT INTO produtos (nome, categoria, preco, descricao) 
-            VALUES (?, ?, ?, ?)
-            ''',
-            (nome, categoria, preco, descricao)
-        )
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO produtos (nome, categoria, preco, descricao)
+            VALUES (%s, %s, %s, %s)
+        """, (
+            dados.get('nome'),
+            dados.get('categoria'),
+            dados.get('preco'),
+            dados.get('descricao')
+        ))
         conn.commit()
+        cur.close()
         conn.close()
-        return jsonify({"mensagem": "Sucesso!"}), 201
+
+        return jsonify({"mensagem": "Produto cadastrado com sucesso"}), 201
 
     except Exception as e:
         return jsonify({"erro": str(e)}), 400
 
+# =====================================================
+# START
+# =====================================================
 if __name__ == '__main__':
     init_db()
     app.run()
+
 
 
 
