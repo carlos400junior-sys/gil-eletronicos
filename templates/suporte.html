@@ -2,8 +2,8 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Suporte - Gil Eletrônicos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     :root {
@@ -35,6 +35,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .logo {
@@ -43,10 +45,16 @@
       font-weight: 800;
     }
 
+    .menu div {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
     .menu a {
       color: #fff;
       text-decoration: none;
-      margin-left: 20px;
+      font-weight: 500;
     }
 
     main {
@@ -61,7 +69,7 @@
       background: #fff;
       padding: 40px;
       border-radius: 20px;
-      max-width: 400px;
+      max-width: 420px;
       width: 100%;
       text-align: center;
       box-shadow: 0 15px 35px rgba(0,0,0,.1);
@@ -113,6 +121,25 @@
       background: #fff;
       border-top: 1px solid #eee;
     }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 5%;
+      }
+
+      .menu {
+        justify-content: space-between;
+      }
+
+      .menu div {
+        gap: 12px;
+      }
+
+      .menu a {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 
@@ -132,19 +159,16 @@
 <main>
   <div class="card">
 
-    <!-- FOTO (troque o arquivo depois) -->
+    <!-- FOTO -->
     <img src="{{ url_for('static', filename='minhafoto.jpg') }}" class="foto" alt="Foto do Suporte">
 
     <h2>Suporte</h2>
     <p>Precisa de ajuda? Fale diretamente comigo pelo WhatsApp.</p>
 
     <a 
-     
-  href="https://wa.me/5581991644068" 
-  target="_blank"
-  class="btn-whats"
->
-
+      href="https://wa.me/5581991644068?text=Olá%2C%20vim%20pelo%20site%20da%20Gil%20Eletrônicos"
+      target="_blank"
+      class="btn-whats"
     >
       <!-- ÍCONE WHATSAPP -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" fill="#fff">
@@ -163,3 +187,4 @@
 
 </body>
 </html>
+

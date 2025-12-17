@@ -8,50 +8,48 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
   <!-- CSS RESPONSIVO INSERIDO -->
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
+ <style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 768px) {
+
+    .menu {
+      flex-direction: row;          /* lado a lado */
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
     }
 
-    /* ===== MOBILE ===== */
-    @media (max-width: 768px) {
-
-      /* MENU */
-      .menu {
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .menu ul {
-        flex-direction: column;
-        gap: 12px;
-        padding: 0;
-      }
-
-      /* TÍTULO */
-      h2 {
-        font-size: 22px !important;
-      }
-
-      /* BUSCA */
-      #busca {
-        width: 100% !important;
-        max-width: 100%;
-      }
-
-      /* GRID */
-      #lista-produtos {
-        grid-template-columns: 1fr !important;
-      }
-
-      /* CARDS */
-      #lista-produtos > div {
-        padding: 18px !important;
-        text-align: center;
-      }
+    .menu ul {
+      flex-direction: row;          /* lado a lado */
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
     }
-  </style>
+
+    .menu ul li a {
+      font-size: 14px;
+      padding: 6px 10px;
+    }
+
+    h2 {
+      font-size: 22px !important;
+    }
+
+    #busca {
+      width: 100% !important;
+    }
+
+    #lista-produtos {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
 </head>
 <body>
 
