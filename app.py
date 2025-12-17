@@ -8,14 +8,17 @@ app = Flask(__name__)
 CORS(app)
 
 # =====================================================
-# CONFIGURAÇÃO DO BANCO POSTGRES (RENDER)
+# CONFIGURAÇÃO DO BANCO
 # =====================================================
 DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL não configurada")
 
 def get_db_connection():
     return psycopg2.connect(
         DATABASE_URL,
-        cursor_factory=RealDictCursor
+        sslmode="require"  # IMPORTANTE para o Render
     )
 
 # =====================================================
@@ -45,11 +48,11 @@ def index():
     return render_template('index.html')
 
 @app.route('/cadastro')
-def pagina_cadastro():
+def cadastro():
     return render_template('cadastro.html')
 
 @app.route('/produtos')
-def pagina_produtos():
+def produtos():
     return render_template('produtos.html')
 
 @app.route('/suporte')
@@ -64,7 +67,7 @@ def api_produtos():
     search = request.args.get('search', '')
 
     conn = get_db_connection()
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
 
     if search:
         cur.execute(
@@ -72,7 +75,7 @@ def api_produtos():
             ('%' + search + '%',)
         )
     else:
-        cur.execute("SELECT * FROM produtos")
+        cur.execute("SELECT * FROM produtos ORDER BY id DESC")
 
     produtos = cur.fetchall()
     cur.close()
@@ -113,7 +116,7 @@ def cadastrar():
 # =====================================================
 if __name__ == '__main__':
     init_db()
-    app.run()
+    app.run(host="0.0.0.0", port=5000)
 
 
 
