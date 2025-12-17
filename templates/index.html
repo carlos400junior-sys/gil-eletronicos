@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gil Eletrônicos - Vitrine</title>
+
+  <!-- CSS correto no Flask -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<a 
+  href="https://wa.me/5581979140738" 
+  target="_blank"
+  title="Fale conosco no WhatsApp"
+  style="
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    width:60px;
+    height:60px;
+    background:#25D366;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+    z-index:999;
+    transition:.3s;
+  "
+  onmouseover="this.style.transform='scale(1.1)'"
+  onmouseout="this.style.transform='scale(1)'"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="#fff">
+    <path d="M19.11 17.44c-.29-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.15-.19.29-.74.93-.91 1.12-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.34-1.44-.86-.77-1.44-1.72-1.61-2.01-.17-.29-.02-.45.13-.6.14-.14.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.64-1.55-.88-2.13-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.78.36-.27.29-1.02 1-.02 2.44 1 1.44 1.97 2.83 4.78 3.97 2.81 1.14 2.81.76 3.32.71.51-.05 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z"/>
+    <path d="M16.02 3.2c-7.1 0-12.82 5.73-12.82 12.82 0 2.26.59 4.38 1.63 6.22L3.2 28.8l6.7-1.58c1.78.97 3.82 1.52 5.99 1.52 7.1 0 12.82-5.73 12.82-12.82S23.12 3.2 16.02 3.2zm0 22.94c-1.96 0-3.78-.56-5.33-1.52l-.38-.23-3.98.94.95-3.88-.25-.4c-.97-1.54-1.54-3.37-1.54-5.33 0-5.47 4.45-9.92 9.92-9.92s9.92 4.45 9.92 9.92-4.45 9.92-9.92 9.92z"/>
+  </svg>
+</a>
+<body>
+
+  <header>
+    <nav class="menu">
+      <span class="logo">Gil Eletrônicos</span>
+      <<ul>
+    <li><a href="/">Início</a></li>
+    <li><a href="/cadastro">Cadastrar Produto</a></li>
+    <li><a href="/produtos">Produtos Cadastrados</a></li>
+  </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Bem-vindo à Gil Eletrônicos</h1>
+    <p>Venda e cadastro de produtos eletrônicos</p>
+  </main>
+
+  <footer>
+    © 2025 Gil Eletrônicos
+  </footer>
+
+</body>
+</html>
+
