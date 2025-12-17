@@ -1,13 +1,17 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import sqlite3
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, 'gil_eletronicos.db')
+
 
 app = Flask(__name__)
 CORS(app)
 
 # Função para iniciar o banco de dados
 def init_db():
-    conn = sqlite3.connect('gil_eletronicos.db')
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS produtos (
@@ -44,7 +48,7 @@ def pagina_produtos():
 @app.route('/api/produtos')
 def api_produtos():
     search = request.args.get('search', '')
-    conn = sqlite3.connect('gil_eletronicos.db')
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row # Permite acessar colunas pelo nome
     cursor = conn.cursor()
     
@@ -63,23 +67,29 @@ def api_produtos():
 @app.route('/cadastrar', methods=['POST'])
 def cadastrar():
     dados = request.json
+
     nome = dados.get('nome')
     categoria = dados.get('categoria')
     preco = dados.get('preco')
     descricao = dados.get('descricao')
 
     try:
-        conn = sqlite3.connect('gil_eletronicos.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        cursor.execute('''
+        cursor.execute(
+            '''
             INSERT INTO produtos (nome, categoria, preco, descricao) 
             VALUES (?, ?, ?, ?)
-        ''', (nome, categoria, preco, descricao))
+            ''',
+            (nome, categoria, preco, descricao)
+        )
         conn.commit()
         conn.close()
         return jsonify({"mensagem": "Sucesso!"}), 201
+
     except Exception as e:
         return jsonify({"erro": str(e)}), 400
+
 if __name__ == '__main__':
     init_db()
     app.run()
