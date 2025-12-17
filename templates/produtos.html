@@ -3,7 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <title>Produtos Cadastrados</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <!-- CSS RESPONSIVO INSERIDO -->
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px) {
+
+      /* MENU */
+      .menu {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .menu ul {
+        flex-direction: column;
+        gap: 12px;
+        padding: 0;
+      }
+
+      /* TÍTULO */
+      h2 {
+        font-size: 22px !important;
+      }
+
+      /* BUSCA */
+      #busca {
+        width: 100% !important;
+        max-width: 100%;
+      }
+
+      /* GRID */
+      #lista-produtos {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* CARDS */
+      #lista-produtos > div {
+        padding: 18px !important;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -37,11 +85,7 @@
     </h2>
 
     <!-- BUSCA -->
-    <div style="
-      display:flex;
-      justify-content:center;
-      margin-bottom:35px;
-    ">
+    <div style="display:flex; justify-content:center; margin-bottom:35px;">
       <input 
         type="text" 
         id="busca" 
@@ -100,36 +144,19 @@ async function carregarProdutos(busca = '') {
         box-shadow:0 10px 25px rgba(0,0,0,.08);
       ">
 
-        <h3 style="
-          margin-bottom:8px;
-          color:#1a1a2e;
-          font-size:18px;
-        ">
+        <h3 style="margin-bottom:8px; color:#1a1a2e; font-size:18px;">
           ${p.nome}
         </h3>
 
-        <div style="
-          color:#777;
-          font-size:14px;
-          margin-bottom:10px;
-        ">
+        <div style="color:#777; font-size:14px; margin-bottom:10px;">
           ${p.categoria}
         </div>
 
-        <div style="
-          color:#00d1ff;
-          font-size:18px;
-          font-weight:700;
-          margin-bottom:12px;
-        ">
+        <div style="color:#00d1ff; font-size:18px; font-weight:700; margin-bottom:12px;">
           R$ ${p.preco.toFixed(2)}
         </div>
 
-        <p style="
-          font-size:14px;
-          color:#333;
-          line-height:1.4;
-        ">
+        <p style="font-size:14px; color:#333; line-height:1.4;">
           ${p.descricao || ''}
         </p>
 
@@ -144,7 +171,6 @@ document.getElementById('busca').addEventListener('input', e => {
 
 carregarProdutos();
 </script>
-
 
 </body>
 </html>
