@@ -75,6 +75,11 @@ def api_produtos():
     conn.close()
     return jsonify(produtos)
 
+@app.route('/nota-fiscal')
+def nota_fiscal():
+    return render_template('nota_fiscal.html')
+
+
 # =========================
 # API - CADASTRAR PRODUTO
 # =========================
