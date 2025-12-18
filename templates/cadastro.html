@@ -221,31 +221,44 @@
   © 2025 Gil Eletrônicos — Todos os direitos reservados.
 </footer>
 
-<script>
+<<script>
 const form = document.getElementById('produtoForm');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const dados = {
-    nome: document.getElementById('nome').value,
-    categoria: document.getElementById('categoria').value,
+    nome: document.getElementById('nome').value.trim(),
+    categoria: document.getElementById('categoria').value.trim(),
     preco: parseFloat(document.getElementById('preco').value),
-    descricao: document.getElementById('descricao').value
+    descricao: document.getElementById('descricao').value.trim()
   };
 
-  fetch('/cadastrar', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(dados)
-  })
-  .then(() => {
-    alert('Item cadastrado com sucesso!');
+  try {
+    const response = await fetch('/cadastrar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dados)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.erro || 'Erro ao cadastrar');
+    }
+
+    alert(result.mensagem || 'Produto cadastrado com sucesso!');
     form.reset();
-  })
-  .catch(() => alert('Erro ao cadastrar'));
+
+  } catch (err) {
+    alert('Erro: ' + err.message);
+    console.error(err);
+  }
 });
 </script>
+
 
 </body>
 </html>

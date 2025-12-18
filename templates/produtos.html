@@ -5,51 +5,50 @@
   <title>Produtos Cadastrados</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Flask static -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-  <!-- CSS RESPONSIVO INSERIDO -->
- <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-
-  /* ===== MOBILE ===== */
-  @media (max-width: 768px) {
-
-    .menu {
-      flex-direction: row;          /* lado a lado */
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
     }
 
-    .menu ul {
-      flex-direction: row;          /* lado a lado */
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px) {
 
-    .menu ul li a {
-      font-size: 14px;
-      padding: 6px 10px;
-    }
+      .menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
 
-    h2 {
-      font-size: 22px !important;
-    }
+      .menu ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
 
-    #busca {
-      width: 100% !important;
-    }
+      .menu ul li a {
+        font-size: 14px;
+        padding: 6px 10px;
+      }
 
-    #lista-produtos {
-      grid-template-columns: 1fr !important;
-    }
-  }
-</style>
+      h2 {
+        font-size: 22px !important;
+      }
 
+      #busca {
+        width: 100% !important;
+      }
+
+      #lista-produtos {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -115,60 +114,67 @@
 
 <script>
 async function carregarProdutos(busca = '') {
-  const response = await fetch(`/api/produtos?search=${busca}`);
-  const produtos = await response.json();
+  try {
+    const response = await fetch(`/api/produtos?search=${encodeURIComponent(busca)}`);
+    const produtos = await response.json();
 
-  const lista = document.getElementById('lista-produtos');
-  lista.innerHTML = '';
+    const lista = document.getElementById('lista-produtos');
+    lista.innerHTML = '';
 
-  if (produtos.length === 0) {
-    lista.innerHTML = `
-      <p style="
-        grid-column:1/-1;
-        text-align:center;
-        color:#777;
-      ">
-        Nenhum produto encontrado.
-      </p>
-    `;
-    return;
-  }
-
-  produtos.forEach(p => {
-    lista.innerHTML += `
-      <div style="
-        background:#fff;
-        padding:22px;
-        border-radius:18px;
-        box-shadow:0 10px 25px rgba(0,0,0,.08);
-      ">
-
-        <h3 style="margin-bottom:8px; color:#1a1a2e; font-size:18px;">
-          ${p.nome}
-        </h3>
-
-        <div style="color:#777; font-size:14px; margin-bottom:10px;">
-          ${p.categoria}
-        </div>
-
-        <div style="color:#00d1ff; font-size:18px; font-weight:700; margin-bottom:12px;">
-          R$ ${p.preco.toFixed(2)}
-        </div>
-
-        <p style="font-size:14px; color:#333; line-height:1.4;">
-          ${p.descricao || ''}
+    if (!produtos || produtos.length === 0) {
+      lista.innerHTML = `
+        <p style="
+          grid-column:1/-1;
+          text-align:center;
+          color:#777;
+        ">
+          Nenhum produto encontrado.
         </p>
+      `;
+      return;
+    }
 
-      </div>
-    `;
-  });
+    produtos.forEach(p => {
+      lista.innerHTML += `
+        <div style="
+          background:#fff;
+          padding:22px;
+          border-radius:18px;
+          box-shadow:0 10px 25px rgba(0,0,0,.08);
+        ">
+
+          <h3 style="margin-bottom:8px; color:#1a1a2e; font-size:18px;">
+            ${p.nome}
+          </h3>
+
+          <div style="color:#777; font-size:14px; margin-bottom:10px;">
+            ${p.categoria}
+          </div>
+
+          <div style="color:#00d1ff; font-size:18px; font-weight:700; margin-bottom:12px;">
+            R$ ${parseFloat(p.preco).toFixed(2)}
+          </div>
+
+          <p style="font-size:14px; color:#333; line-height:1.4;">
+            ${p.descricao || ''}
+          </p>
+
+        </div>
+      `;
+    });
+
+  } catch (err) {
+    console.error('Erro ao carregar produtos:', err);
+  }
 }
 
-document.getElementById('busca').addEventListener('input', e => {
+/* Carrega todos ao abrir */
+carregarProdutos();
+
+/* Busca em tempo real */
+document.getElementById('busca').addEventListener('input', (e) => {
   carregarProdutos(e.target.value);
 });
-
-carregarProdutos();
 </script>
 
 </body>
